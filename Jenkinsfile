@@ -28,7 +28,7 @@ pipeline {
   post { 
     success { 
       httpRequest authentication: 'githubfjbot', httpMode: 'POST', consoleLogResponseBody: true, requestBody: """{
-                 "body": "Successfully built!\\n--------------\\n\\Please find the build here\\n${BUILD_URL}\\n\\n--------------\\nRefer to this link for details: ${RUN_DISPLAY_URL}"
+                 "body": "Successfully built!\\n--------------\\n\\nPlease find the build here\\n${BUILD_URL}\\n\\n--------------\\nRefer to this link for details: ${RUN_DISPLAY_URL}"
            }""", responseHandle: 'STRING', url: "https://api.github.com/repos/fjbot/testrepo/issues/${CHANGE_ID}/comments"
     }
     failure { 
