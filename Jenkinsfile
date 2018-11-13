@@ -10,6 +10,7 @@ pipeline {
     SKIP_DB_DATA_VOLUME_UPDATE = 1
     DB_DATA_VOLUME = "/home/jslave/dumps/test-latest.tar.gz"
     VIRTUAL_HOST = "${BUILD_NUMBER}.${BRANCH_NAME.toLowerCase()}.ygbw.${VIRTUAL_HOST_BASE}"
+    BUILD_URL = "http://${VIRTUAL_HOST}/"
   }
 
   stages {
@@ -27,7 +28,9 @@ pipeline {
   post { 
     always { 
       httpRequest authentication: 'githubfjbot', httpMode: 'POST', consoleLogResponseBody: true, requestBody: """{
-                 "body": "Nice change!\n Build log: ${RUN_DISPLAY_URL}\n Build url: http:\/\/${VIRTUAL_HOST}\/"
+                 "body": "Nice change!
+                 Build log: ${RUN_DISPLAY_URL}
+                 Build url: ${BUILD_URL}"
            }""", responseHandle: 'STRING', url: "https://api.github.com/repos/fjbot/testrepo/issues/${CHANGE_ID}/comments"
     }
   }
