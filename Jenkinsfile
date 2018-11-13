@@ -30,16 +30,18 @@ pipeline {
   post { 
     success { 
       script {
-        def body = """Successfully built!
-        --------------
+        def body = """\
+Successfully built!
+--------------
         
-        | Environment   | Link          |
-        | ------------- | ------------- |
-        | Build         | ${BUILD_URL}  |
+| Environment   | Link          |
+| ------------- | ------------- |
+| Build         | ${BUILD_URL}  |
         
-        --------------
-        Refer to this link for build results (access rights to CI server needed): 
-        ${RUN_DISPLAY_URL}"""
+--------------
+Refer to this link for build results (access rights to CI server needed): 
+${RUN_DISPLAY_URL}"""
+
         def jsonbody = JsonOutput.toJson([body: body])
         def url = "https://api.github.com/repos/fjbot/testrepo/issues/${CHANGE_ID}/comments"
         def response = httpRequest authentication: 'githubfjbot', httpMode: 'POST', consoleLogResponseBody: true, requestBody: jsonbody, responseHandle: 'STRING', url: url
