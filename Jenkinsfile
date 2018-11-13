@@ -16,7 +16,7 @@ pipeline {
     stage('build') {
       steps {
         sh 'env'
-        response = httpRequest authentication: 'githubfjbot', httpMode: 'POST', requestBody: '''{
+        httpRequest authentication: 'githubfjbot', httpMode: 'POST', requestBody: '''{
                  "body": "Nice change",
                  "commit_id": "${GIT_COMMIT}",
                  "path": "/",
