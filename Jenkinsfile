@@ -28,6 +28,7 @@ pipeline {
   post { 
     success { 
       script {
+        import groovy.json.*
         def body = """Successfully built!
         --------------
         
