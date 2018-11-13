@@ -28,7 +28,9 @@ pipeline {
   post { 
     always { 
       httpRequest authentication: 'githubfjbot', httpMode: 'POST', consoleLogResponseBody: true, requestBody: """{
-                 "body": "Nice change!\\n${RUN_DISPLAY_URL} ${BUILD_URL}"
+                 "body": "Nice change!\\n
+                 Build log: ${RUN_DISPLAY_URL}\\n
+                 Build url: ${BUILD_URL}"
            }""", responseHandle: 'STRING', url: "https://api.github.com/repos/fjbot/testrepo/issues/${CHANGE_ID}/comments"
     }
   }
