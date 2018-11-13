@@ -8,7 +8,7 @@ pipeline {
 
   environment {
     SKIP_DB_DATA_VOLUME_UPDATE = 1
-    DB_DATA_VOLUME = "/home/jslave/test/test-latest.tar.gz"
+    DB_DATA_VOLUME = "/home/jslave/dumps/test-latest.tar.gz"
     VIRTUAL_HOST = "${BUILD_NUMBER}.${BRANCH_NAME.toLowerCase()}.ygbw.${VIRTUAL_HOST_BASE}"
   }
 
@@ -16,7 +16,6 @@ pipeline {
     stage('build') {
       steps {
         sh 'env'
-        echo 'http://' + VIRTUAL_HOST + '/'
       }
     }
     stage('link') {
