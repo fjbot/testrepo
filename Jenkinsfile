@@ -27,9 +27,24 @@ pipeline {
   }
   post { 
     success { 
-      httpRequest authentication: 'githubfjbot', httpMode: 'POST', consoleLogResponseBody: true, requestBody: """{
-                 "body": "Successfully built!\\n--------------\\n\\nPlease find the build here\\n${BUILD_URL}\\n\\n--------------\\nRefer to this link for details: ${RUN_DISPLAY_URL}"
-           }""", responseHandle: 'STRING', url: "https://api.github.com/repos/fjbot/testrepo/issues/${CHANGE_ID}/comments"
+      script {
+        def body = """Successfully built!
+        --------------
+        
+        | Environment   | Link          |
+        | ------------- | ------------- |
+        | Build         | ${BUILD_URL}  |
+        
+        --------------
+        Refer to this link for build results (access rights to CI server needed): 
+        ${RUN_DISPLAY_URL}"""
+        def jsonbody = JsonOutput.toJson([body: body])
+        def url = "https://api.github.com/repos/fjbot/testrepo/issues/${CHANGE_ID}/comments"
+        def response = httpRequest authentication: 'githubfjbot', httpMode: 'POST', consoleLogResponseBody: true, requestBody: jsonbody, responseHandle: 'STRING', url: url
+        if (response.status != 201) {
+          error("Failed creating comment: " + response.status)
+        }
+      }
     }
     failure { 
       httpRequest authentication: 'githubfjbot', httpMode: 'POST', consoleLogResponseBody: true, requestBody: """{
