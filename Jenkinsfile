@@ -1,3 +1,5 @@
+import groovy.json.*
+
 pipeline {
   agent {
     node {
@@ -28,7 +30,6 @@ pipeline {
   post { 
     success { 
       script {
-        import groovy.json.*
         def body = """Successfully built!
         --------------
         
