@@ -26,9 +26,14 @@ pipeline {
     }
   }
   post { 
-    always { 
+    success { 
       httpRequest authentication: 'githubfjbot', httpMode: 'POST', consoleLogResponseBody: true, requestBody: """{
-                 "body": "Nice change!\\nBuild log: ${RUN_DISPLAY_URL}\\nBuild url: ${BUILD_URL}"
+                 "body": "Successfully built!\\n--------------\\nBuild log: ${BUILD_URL}\\n--------------\\nRefer to this link for details: ${RUN_DISPLAY_URL}"
+           }""", responseHandle: 'STRING', url: "https://api.github.com/repos/fjbot/testrepo/issues/${CHANGE_ID}/comments"
+    }
+    failure { 
+      httpRequest authentication: 'githubfjbot', httpMode: 'POST', consoleLogResponseBody: true, requestBody: """{
+                 "body": "Failure!\\n--------------\\nRefer to this link for details: ${RUN_DISPLAY_URL}"
            }""", responseHandle: 'STRING', url: "https://api.github.com/repos/fjbot/testrepo/issues/${CHANGE_ID}/comments"
     }
   }
