@@ -16,6 +16,16 @@ pipeline {
     stage('build') {
       steps {
         sh 'env'
+        def body="""{
+                 "body": "Nice change",
+                 "commit_id": "${GIT_COMMIT}",
+                 "path": "/",
+                 "position": 0
+           }"""
+        def response = httpRequest authentication: 'githubfjbot', httpMode: 'POST', requestBody: body, responseHandle: 'STRING', url: 'https://api.github.com/repos/fjbot/testrepo/issues/${CHANGE_ID}/comments'
+        if(response.status != 201) {
+            error("Commenting Failed: " + response.status)
+        }
       }
     }
     stage('link') {
