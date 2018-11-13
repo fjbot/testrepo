@@ -16,18 +16,20 @@ pipeline {
     stage('build') {
       steps {
         sh 'env'
-        httpRequest authentication: 'githubfjbot', httpMode: 'POST', consoleLogResponseBody: true, requestBody: """{
-                 "body": "Nice change",
-                 "commit_id": "${GIT_COMMIT}",
-                 "path": "/",
-                 "position": 0
-           }""", responseHandle: 'STRING', url: "https://api.github.com/repos/fjbot/testrepo/issues/${CHANGE_ID}/comments"
       }
     }
     stage('link') {
       steps {
         echo 'http://' + VIRTUAL_HOST + '/'
       }
+    }
+  }
+  post { 
+    always { 
+      echo 'I will always say Hello again!'
+      httpRequest authentication: 'githubfjbot', httpMode: 'POST', consoleLogResponseBody: true, requestBody: """{
+                 "body": "Nice change"
+           }""", responseHandle: 'STRING', url: "https://api.github.com/repos/fjbot/testrepo/issues/${CHANGE_ID}/comments"
     }
   }
 }
