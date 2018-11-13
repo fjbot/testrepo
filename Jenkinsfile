@@ -16,12 +16,12 @@ pipeline {
     stage('build') {
       steps {
         sh 'env'
-        httpRequest authentication: 'githubfjbot', httpMode: 'POST', requestBody: '''{
+        httpRequest authentication: 'githubfjbot', httpMode: 'POST', requestBody: """{
                  "body": "Nice change",
                  "commit_id": "${GIT_COMMIT}",
                  "path": "/",
                  "position": 0
-           }''', responseHandle: 'STRING', url: 'https://api.github.com/repos/fjbot/testrepo/issues/${CHANGE_ID}/comments'
+           }""", responseHandle: 'STRING', url: "https://api.github.com/repos/fjbot/testrepo/issues/${CHANGE_ID}/comments"
       }
     }
     stage('link') {
